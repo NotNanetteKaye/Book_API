@@ -15,3 +15,12 @@ def books_list(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+@api_view(['GET'])
+def book_detail(request, pk):
+    try:
+        book = Book.objects.get(pk=pk)
+        serializer = BookSerializer(book)
+        return Response(serializer.data)
+    except Book.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
